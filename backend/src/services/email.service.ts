@@ -18,7 +18,8 @@ export const sendPasswordResetEmail = async (toEmail: string, otp: string) => {
     return true; 
   }
 
-  console.log(`[DEV/RENDER INFO]: OTP for ${toEmail} is ${otp}`);
+  // Safe diagnostic log without exposing the OTP
+  console.log(`[SMTP PROXY] Dispatching password reset email for ${toEmail.replace(/(.{2})(.*)(@.*)/, '$1***$3')}`);
 
   const transporter = createTransporter();
 

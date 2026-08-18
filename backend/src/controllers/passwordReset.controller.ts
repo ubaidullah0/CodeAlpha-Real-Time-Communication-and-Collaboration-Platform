@@ -14,11 +14,18 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     const user = await prisma.user.findUnique({ where: { email } });
 
-    // ALWAYS return a generic response to prevent email enumeration
     const genericResponse = { message: 'If the account exists, a password reset code has been sent.' };
 
     if (!user) {
       return res.status(200).json(genericResponse);
+    }
+
+    const existingRecord = await prisma.passwordReset.findUnique({ where: { userId: user.id } });
+    if (existingRecord) {
+      const timeSinceLastUpdate = Date.now() - existingRecord.updatedAt.getTime();
+      if (timeSinceLastUpdate < 30 * 1000) {
+        return res.status(429).json({ message: 'Please wait at least 30 seconds before requesting another code.' });
+      }
     }
 
     // Generate 6-digit OTP
@@ -49,11 +56,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const emailSent = await sendPasswordResetEmail(user.email, otp);
 
     if (!emailSent) {
-      // Return devOtp so frontend can show it since Render Free Tier blocks SMTP
-      return res.status(200).json({ 
-        message: 'If the account exists, a password reset code has been sent.',
-        devOtp: otp 
-      });
+      console.error('Failed to send OTP email to user');
     }
 
     return res.status(200).json(genericResponse);
