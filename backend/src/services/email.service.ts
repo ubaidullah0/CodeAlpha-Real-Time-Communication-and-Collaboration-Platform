@@ -5,6 +5,7 @@ const createTransporter = () => {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '465', 10),
     secure: true, // true for 465, false for other ports
+    connectionTimeout: 5000, // 5 seconds timeout so it doesn't hang
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
@@ -16,6 +17,8 @@ export const sendPasswordResetEmail = async (toEmail: string, otp: string) => {
   if (process.env.NODE_ENV === 'test') {
     return true; 
   }
+
+  console.log(`[DEV/RENDER INFO]: OTP for ${toEmail} is ${otp}`);
 
   const transporter = createTransporter();
 
