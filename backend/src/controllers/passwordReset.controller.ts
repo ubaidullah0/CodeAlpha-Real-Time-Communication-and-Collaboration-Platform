@@ -46,7 +46,15 @@ export const forgotPassword = async (req: Request, res: Response) => {
     });
 
     // Send email
-    await sendPasswordResetEmail(user.email, otp);
+    const emailSent = await sendPasswordResetEmail(user.email, otp);
+
+    if (!emailSent) {
+      // Return devOtp so frontend can show it since Render Free Tier blocks SMTP
+      return res.status(200).json({ 
+        message: 'If the account exists, a password reset code has been sent.',
+        devOtp: otp 
+      });
+    }
 
     return res.status(200).json(genericResponse);
   } catch (error) {

@@ -27,6 +27,10 @@ const ForgotPassword = () => {
         throw new Error(data.message || 'Something went wrong');
       }
 
+      if (data.devOtp) {
+        alert(`Render Free Tier blocks sending emails to prevent spam.\n\nYour OTP is: ${data.devOtp}\n\nPlease use this to verify your account.`);
+      }
+
       // Navigate to OTP page regardless (since API always returns success if valid payload)
       navigate(`/verify-otp?email=${encodeURIComponent(email.trim())}`);
     } catch (err: unknown) {

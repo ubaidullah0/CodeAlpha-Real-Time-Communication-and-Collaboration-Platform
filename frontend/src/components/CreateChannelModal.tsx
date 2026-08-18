@@ -3,32 +3,7 @@ import axios from 'axios';
 import { useWorkspace } from '../context/WorkspaceContext';
 
 import { createPortal } from 'react-dom';
-export const CreateChannelModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [name, setName] = useState('');
-  const [type, setType] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { currentWorkspace, refreshChannels } = useWorkspace();
 
-  React.useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return setError('Name is required');
-    if (!currentWorkspace) return;
-    try {
-      setLoading(true);
-      setError('');
-      await axios.post(`/api/workspaces/${currentWorkspace.id}/channels`, { name: name.trim(), type }, { withCredentials: true });
-      await refreshChannels();
-      onClose();
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
 export const CreateChannelModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [name, setName] = useState('');
   const [type, setType] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');

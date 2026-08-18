@@ -5,7 +5,7 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(30); // 30 seconds
   const [resending, setResending] = useState(false);
   
   const navigate = useNavigate();
@@ -76,7 +76,11 @@ const VerifyOtp = () => {
         throw new Error(data.message || 'Failed to resend code');
       }
 
-      setTimeLeft(120); // Reset timer
+      if (data.devOtp) {
+        alert(`Render Free Tier blocks sending emails to prevent spam.\n\nYour new OTP is: ${data.devOtp}\n\nPlease use this to verify your account.`);
+      }
+
+      setTimeLeft(30); // Reset timer
       setOtp('');
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -195,19 +199,16 @@ const VerifyOtp = () => {
           </form>
 
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-            {timeLeft === 0 ? (
-              <button 
-                onClick={handleResend}
-                disabled={resending}
-                className="text-sm font-semibold text-indigo-600 hover:text-indigo-500 disabled:opacity-50 transition-colors"
-              >
-                {resending ? 'Sending...' : 'Send a new code'}
-              </button>
-            ) : (
-              <p className="text-sm text-slate-500">
-                Didn't receive the code? Wait for the timer.
-              </p>
-            )}
+            <button 
+              onClick={handleResend}
+              disabled={resending || timeLeft > 0}
+              className={`text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full py-2 rounded-lg ${timeLeft > 0 ? 'text-slate-400 bg-slate-50 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100'}`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {resending ? 'Sending...' : timeLeft > 0 ? `Resend Code in ${formatTime(timeLeft)}` : 'Resend Code'}
+            </button>
           </div>
         </div>
       </div>
