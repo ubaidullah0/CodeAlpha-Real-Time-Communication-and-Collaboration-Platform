@@ -384,7 +384,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
       )}
 
       <form onSubmit={handleSend} className="p-4 bg-white border-t border-slate-100">
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 sm:gap-3 items-center">
           <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
           <button
             type="button"
@@ -415,14 +415,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+            className="flex-1 min-w-0 px-3 md:px-4 py-2 md:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
             placeholder={isRecording ? "Recording audio..." : "Type your message..."}
             disabled={sending || uploading || isRecording}
           />
           <button
             type="submit"
             disabled={(!input.trim() && !uploading) || sending || isRecording}
-            className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm shadow-indigo-200 flex items-center justify-center"
+            className="shrink-0 px-3 md:px-6 py-2 md:py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm shadow-indigo-200 flex items-center justify-center"
           >
             {sending || uploading ? '...' : 'Send'}
           </button>

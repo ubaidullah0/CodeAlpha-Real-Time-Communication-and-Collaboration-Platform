@@ -320,7 +320,7 @@ export const ChannelView: React.FC<{ channel: Channel }> = ({ channel }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-100">
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-2 sm:gap-3 items-center">
               <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading || isRecording} className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
@@ -346,14 +346,14 @@ export const ChannelView: React.FC<{ channel: Channel }> = ({ channel }) => {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="flex-1 min-w-0 px-3 md:px-4 py-2 md:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                 placeholder={isRecording ? "Recording audio..." : `Message ${channel.type === 'PRIVATE' ? '' : '#'}${channel.name}`}
                 disabled={uploading || isRecording}
               />
               <button 
                 type="submit" 
                 disabled={(!inputText.trim() && !uploading) || isRecording}
-                className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm shadow-indigo-200 flex items-center justify-center"
+                className="shrink-0 px-3 md:px-6 py-2 md:py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm shadow-indigo-200 flex items-center justify-center"
               >
                 {uploading ? '...' : 'Send'}
               </button>

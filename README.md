@@ -2,6 +2,13 @@
 
 ![SyncSpace Hero](https://via.placeholder.com/1200x400/4F46E5/FFFFFF?text=SyncSpace+-+Real-Time+Collaboration+Platform)
 
+## Screenshots
+
+![Video Call](docs/screenshot_video.png)
+
+![Dashboard](docs/screenshot_dashboard.png)
+
+
 A professional, modern SaaS real-time communication and collaboration platform. SyncSpace enables teams to work together seamlessly with workspaces, channels, direct messaging, real-time video calling, screen sharing, file sharing, and interactive collaborative whiteboards.
 
 ---
