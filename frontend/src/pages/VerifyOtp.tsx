@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes validity
-  const [resendCooldown, setResendCooldown] = useState(30); // 30 seconds wait to resend
+  const [otpExpiresIn, setOtpExpiresIn] = useState(120);
+  const [resendCooldown, setResendCooldown] = useState(30);
   const [resending, setResending] = useState(false);
   
   const navigate = useNavigate();
@@ -14,23 +14,54 @@ const VerifyOtp = () => {
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get('email');
 
+  const otpTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const cooldownTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startTimers = () => {
+    if (otpTimerRef.current) clearInterval(otpTimerRef.current);
+    if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+
+    setOtpExpiresIn(120);
+    setResendCooldown(30);
+
+    otpTimerRef.current = setInterval(() => {
+      setOtpExpiresIn((prev) => {
+        if (prev <= 1) {
+          if (otpTimerRef.current) clearInterval(otpTimerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    cooldownTimerRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   useEffect(() => {
     if (!email) {
       navigate('/forgot-password');
       return;
     }
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    startTimers();
 
-    return () => clearInterval(timer);
+    return () => {
+      if (otpTimerRef.current) clearInterval(otpTimerRef.current);
+      if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+    };
   }, [email, navigate]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length !== 6 || timeLeft === 0) return;
+    if (otp.length !== 6 || otpExpiresIn === 0) return;
 
     setLoading(true);
     setError('');
@@ -62,7 +93,7 @@ const VerifyOtp = () => {
   };
 
   const handleResend = async () => {
-    if (resending) return;
+    if (resending || resendCooldown > 0) return;
     setResending(true);
     setError('');
 
@@ -74,16 +105,14 @@ const VerifyOtp = () => {
       });
 
       const data = await res.json();
+      
+      // If 429 Too Many Requests or other non-OK status
       if (!res.ok) {
         throw new Error(data.message || 'Failed to resend code');
       }
 
-      if (data.devOtp) {
-        alert(`Render Free Tier blocks sending emails to prevent spam.\n\nYour new OTP is: ${data.devOtp}\n\nPlease use this to verify your account.`);
-      }
-
-      setTimeLeft(120); // Reset main validity timer to 2 minutes
-      setResendCooldown(30); // Reset resend cooldown to 30 seconds
+      // Restart timers successfully
+      startTimers();
       setOtp('');
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -175,25 +204,34 @@ const VerifyOtp = () => {
                     value={otp[index] && otp[index] !== ' ' ? otp[index] : ''}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    disabled={loading || timeLeft === 0}
+                    disabled={loading || otpExpiresIn === 0}
                   />
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
-              <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${timeLeft < 30 ? 'bg-rose-100 text-rose-600' : 'bg-slate-100 text-slate-600'}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                Code expires in: {formatTime(timeLeft)}
-              </div>
+            <div className="flex flex-col items-center gap-2 mt-4">
+              {otpExpiresIn > 0 ? (
+                <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${otpExpiresIn < 30 ? 'bg-rose-100 text-rose-600' : 'bg-slate-100 text-slate-600'}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  OTP expires in: {formatTime(otpExpiresIn)}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium bg-rose-100 text-rose-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  OTP has expired
+                </div>
+              )}
             </div>
 
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading || otp.replace(/ /g, '').length !== 6 || timeLeft === 0}
+                disabled={loading || otp.replace(/ /g, '').length !== 6 || otpExpiresIn === 0}
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {loading ? 'Verifying...' : 'Verify Code'}
@@ -201,16 +239,22 @@ const VerifyOtp = () => {
             </div>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+          <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col items-center gap-3">
+            {resendCooldown > 0 ? (
+              <p className="text-sm text-slate-500 font-medium">
+                Resend available in: <span className="text-indigo-600 font-bold">{formatTime(resendCooldown)}</span>
+              </p>
+            ) : null}
+            
             <button 
               onClick={handleResend}
               disabled={resending || resendCooldown > 0}
-              className={`text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full py-2 rounded-lg ${resendCooldown > 0 ? 'text-slate-400 bg-slate-50 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100'}`}
+              className={`text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full py-2.5 rounded-lg ${resendCooldown > 0 ? 'text-slate-400 bg-slate-50 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              {resending ? 'Sending...' : resendCooldown > 0 ? `Wait ${resendCooldown}s to Resend` : 'Resend Code'}
+              {resending ? 'Sending new code...' : 'Resend OTP'}
             </button>
           </div>
         </div>
