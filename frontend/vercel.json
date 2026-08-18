@@ -1,12 +1,28 @@
-﻿{
+{
   "rewrites": [
     {
-      "source": "/api/:type(auth|workspaces|channels|messages|upload|health)/:path*",
-      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/:type/:path*"
+      "source": "/api/auth/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/auth/:path*"
     },
     {
-      "source": "/api/:type(auth|workspaces|channels|messages|upload|health)",
-      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/:type"
+      "source": "/api/workspaces/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/workspaces/:path*"
+    },
+    {
+      "source": "/api/channels/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/channels/:path*"
+    },
+    {
+      "source": "/api/messages/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/messages/:path*"
+    },
+    {
+      "source": "/api/upload/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/upload/:path*"
+    },
+    {
+      "source": "/api/health/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/health/:path*"
     },
     {
       "source": "/uploads/:path*",
