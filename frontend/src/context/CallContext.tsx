@@ -253,12 +253,12 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const startCall = async (targetUserId: string, targetName: string, video = true) => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      const stream = await navigator.mediaDevices.getUserMedia({ video, audio: true });
       setLocalStream(stream);
       localStreamRef.current = stream;
       setCallState('calling');
-      setCurrentCall({ id: targetUserId, name: targetName, video, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, isMulti: false });
-      socket?.emit('call-user', { targetUserId, video, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      setCurrentCall({ id: targetUserId, name: targetName, video, audio: true, isMulti: false });
+      socket?.emit('call-user', { targetUserId, video, audio: true });
     } catch {
       setError('Could not access camera/microphone');
     }
@@ -266,11 +266,11 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const joinCall = async (channelId: string, channelName: string) => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       setLocalStream(stream);
       localStreamRef.current = stream;
       setCallState('connected');
-      setCurrentCall({ id: channelId, name: channelName, video: true, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, isMulti: true });
+      setCurrentCall({ id: channelId, name: channelName, video: true, audio: true, isMulti: true });
       socket?.emit('join-call', { channelId });
     } catch {
       setError('Could not access camera/microphone');
@@ -280,7 +280,7 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const acceptCall = async () => {
     if (!currentCall) return;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: currentCall.video, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: currentCall.video, audio: true });
       setLocalStream(stream);
       localStreamRef.current = stream;
       setCallState('connecting');
@@ -334,7 +334,7 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (isScreenSharing) {
       // Revert to webcam
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: videoEnabled, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: videoEnabled, audio: true });
         const videoTrack = stream.getVideoTracks()[0];
         
         Object.values(pcs.current).forEach(pc => {

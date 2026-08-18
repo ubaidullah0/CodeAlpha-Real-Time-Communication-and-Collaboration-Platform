@@ -47,10 +47,30 @@ export const sendPasswordResetEmail = async (toEmail: string, otp: string) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const frontendUrl = process.env.FRONTEND_URL || 'https://code-alpha-real-time-communication-five.vercel.app';
+    const response = await fetch(`${frontendUrl}/api/sendEmail`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        toEmail,
+        otp,
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+        from: process.env.SMTP_FROM || process.env.SMTP_USER
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Vercel email proxy failed:', await response.text());
+      return false;
+    }
+
+    console.log('Email sent successfully via Vercel Proxy');
     return true;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email via proxy:', error);
     return false;
   }
 };

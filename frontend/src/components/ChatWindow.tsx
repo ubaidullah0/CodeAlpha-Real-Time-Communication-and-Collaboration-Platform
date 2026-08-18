@@ -197,7 +197,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
         const mimeType = mediaRecorder.mimeType || 'audio/webm';
         const ext = mimeType.includes('mp4') ? 'mp4' : mimeType.includes('ogg') ? 'ogg' : 'webm';
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-        const file = new File([audioBlob], `"voice-message.${ext}`", { type: mimeType });
+        const file = new File([audioBlob], `voice-message.${ext}`, { type: mimeType });
         await uploadVoiceMessage(file);
       };
 
@@ -417,8 +417,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className={isRecording ? "flex-1 min-w-0 px-3 md:px-4 py-2 md:py-3 bg-rose-50 text-rose-600 font-medium border border-rose-200 rounded-xl focus:outline-none transition-all placeholder-rose-400" : "flex-1 min-w-0 px-3 md:px-4 py-2 md:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"}
-            placeholder={isRecording ? "🔴 Recording voice message..." : "Type your message..."}
+            className="flex-1 min-w-0 px-3 md:px-4 py-2 md:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+            placeholder={isRecording ? "Recording audio..." : "Type your message..."}
             disabled={sending || uploading || isRecording}
           />
           <button
@@ -431,39 +431,27 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
         </div>
       </form>
 
-        {/* Image Lightbox Modal */}
-        {selectedImage && (
-          <div 
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="relative max-w-5xl w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-              <div className="absolute top-4 right-4 flex gap-3">
-                <a 
-                  href={selectedImage} 
-                  download 
-                  target="_blank"
-                  className="p-2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors"
-                  title="Download Image"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                </a>
-                <button 
-                  className="p-2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors"
-                  onClick={() => setSelectedImage(null)}
-                >
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
-              <img 
-                src={selectedImage} 
-                alt="Fullscreen view" 
-                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-              />
-            </div>
+      {/* Image Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-5xl w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="absolute top-4 right-4 p-2 text-white/70 hover:text-white bg-black/50 rounded-full transition-colors"
+              onClick={() => setSelectedImage(null)}
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <img 
+              src={selectedImage} 
+              alt="Fullscreen view" 
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            />
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };

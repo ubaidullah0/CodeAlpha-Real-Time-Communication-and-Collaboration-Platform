@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useWorkspace } from '../context/WorkspaceContext';
-import { createPortal } from 'react-dom';
+
 
 export const CreateWorkspaceModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [name, setName] = useState('');
