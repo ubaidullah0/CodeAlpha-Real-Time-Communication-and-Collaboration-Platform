@@ -5,7 +5,8 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [timeLeft, setTimeLeft] = useState(30); // 30 seconds
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes validity
+  const [resendCooldown, setResendCooldown] = useState(30); // 30 seconds wait to resend
   const [resending, setResending] = useState(false);
   
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const VerifyOtp = () => {
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(timer);
@@ -80,7 +82,8 @@ const VerifyOtp = () => {
         alert(`Render Free Tier blocks sending emails to prevent spam.\n\nYour new OTP is: ${data.devOtp}\n\nPlease use this to verify your account.`);
       }
 
-      setTimeLeft(30); // Reset timer
+      setTimeLeft(120); // Reset main validity timer to 2 minutes
+      setResendCooldown(30); // Reset resend cooldown to 30 seconds
       setOtp('');
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -178,12 +181,12 @@ const VerifyOtp = () => {
               </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center gap-2">
               <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${timeLeft < 30 ? 'bg-rose-100 text-rose-600' : 'bg-slate-100 text-slate-600'}`}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                {formatTime(timeLeft)}
+                Code expires in: {formatTime(timeLeft)}
               </div>
             </div>
 
@@ -201,13 +204,13 @@ const VerifyOtp = () => {
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">
             <button 
               onClick={handleResend}
-              disabled={resending || timeLeft > 0}
-              className={`text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full py-2 rounded-lg ${timeLeft > 0 ? 'text-slate-400 bg-slate-50 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100'}`}
+              disabled={resending || resendCooldown > 0}
+              className={`text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full py-2 rounded-lg ${resendCooldown > 0 ? 'text-slate-400 bg-slate-50 cursor-not-allowed' : 'text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              {resending ? 'Sending...' : timeLeft > 0 ? `Resend Code in ${formatTime(timeLeft)}` : 'Resend Code'}
+              {resending ? 'Sending...' : resendCooldown > 0 ? `Wait ${resendCooldown}s to Resend` : 'Resend Code'}
             </button>
           </div>
         </div>
