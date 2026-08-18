@@ -153,7 +153,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
       const formData = new FormData();
       formData.append('file', file);
       
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -221,7 +221,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
       const formData = new FormData();
       formData.append('file', file);
       
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -344,16 +344,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
                       {msg.fileUrl && (
                         <div className="mb-2">
                           {msg.fileType?.startsWith('audio/') ? (
-                            <audio controls src={`http://localhost:3001${msg.fileUrl}`} className="max-w-[240px] h-10" />
+                            <audio controls src={`${msg.fileUrl}`} className="max-w-[240px] h-10" />
                           ) : msg.fileType?.startsWith('image/') ? (
                             <img 
-                              src={`http://localhost:3001${msg.fileUrl}`} 
+                              src={`${msg.fileUrl}`} 
                               alt={msg.fileName} 
                               className="max-w-xs rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity" 
-                              onClick={() => setSelectedImage(`http://localhost:3001${msg.fileUrl}`)}
+                              onClick={() => setSelectedImage(`${msg.fileUrl}`)}
                             />
                           ) : (
-                            <a href={`http://localhost:3001${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all">
+                            <a href={`${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all">
                               {msg.fileName}
                             </a>
                           )}
