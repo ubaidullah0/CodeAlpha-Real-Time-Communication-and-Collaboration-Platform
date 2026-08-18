@@ -19,12 +19,13 @@ export default async function handler(req, res) {
       from: from || user,
       to: toEmail,
       subject: 'Password Reset Verification Code - SyncSpace',
-      html: \<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Password Reset</h2>
-        <p>Your verification code is: <strong>\</strong></p>
+        <p>Your verification code is: <strong>${otp}</strong></p>
         <p>This code will expire in 2 minutes.</p>
         <p>If you didn't request this, please ignore this email.</p>
-      </div>\
+      </div>`
     };
 
     await transporter.sendMail(mailOptions);
