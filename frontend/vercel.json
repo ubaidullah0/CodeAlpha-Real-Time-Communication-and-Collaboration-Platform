@@ -1,23 +1,23 @@
 ﻿{
   "rewrites": [
     {
-      "source": "/api/sendEmail",
-      "destination": "/api/sendEmail.js"
+      "source": "/api/:type(auth|workspaces|channels|messages|upload|health)/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/:type/:path*"
     },
     {
-      "source": "/api/(.*)",
-      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/$1"
+      "source": "/api/:type(auth|workspaces|channels|messages|upload|health)",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/api/:type"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "https://codealpha-real-time-communication-and.onrender.com/uploads/$1"
+      "source": "/uploads/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/uploads/:path*"
     },
     {
-      "source": "/socket.io/(.*)",
-      "destination": "https://codealpha-real-time-communication-and.onrender.com/socket.io/$1"
+      "source": "/socket.io/:path*",
+      "destination": "https://codealpha-real-time-communication-and.onrender.com/socket.io/:path*"
     },
     {
-      "source": "(.*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
