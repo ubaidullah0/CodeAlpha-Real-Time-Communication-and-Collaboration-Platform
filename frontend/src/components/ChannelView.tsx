@@ -169,8 +169,10 @@ export const ChannelView: React.FC<{ channel: Channel }> = ({ channel }) => {
       };
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        const file = new File([audioBlob], 'voice-message.webm', { type: 'audio/webm' });
+        const mimeType = mediaRecorder.mimeType || 'audio/webm';
+        const ext = mimeType.includes('mp4') ? 'mp4' : mimeType.includes('ogg') ? 'ogg' : 'webm';
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+        const file = new File([audioBlob], `"voice-message.${ext}`", { type: mimeType });
         await uploadVoiceMessage(file);
       };
 
