@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { Channel } from '../context/WorkspaceContext';
 import { Whiteboard } from './Whiteboard';
 import { useCall } from '../context/CallContext';
+import { VoiceMessagePlayer } from './VoiceMessagePlayer';
 
 interface ChannelMessage {
   id: string;
@@ -292,27 +293,29 @@ export const ChannelView: React.FC<{ channel: Channel }> = ({ channel }) => {
                       </button>
                     )}
                     <div 
-                      className={`px-4 py-2.5 rounded-2xl text-sm min-w-0 ${isMe ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-white text-slate-800 border border-slate-200 shadow-sm rounded-tl-sm'}`}
+                      className={`px-3.5 py-2.5 rounded-2xl text-sm min-w-0 ${isMe ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-white text-slate-800 border border-slate-200 shadow-sm rounded-tl-sm'}`}
                     >
                       {msg.fileUrl && (
-                        <div className="mb-2">
+                        <div>
                           {msg.fileType?.startsWith('audio/') ? (
-                            <audio controls src={`${msg.fileUrl}`} className="max-w-[240px] h-10" />
+                            <VoiceMessagePlayer audioUrl={msg.fileUrl} isMine={isMe} />
                           ) : msg.fileType?.startsWith('image/') ? (
                             <img 
                               src={`${msg.fileUrl}`} 
                               alt={msg.fileName} 
-                              className="max-w-xs rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity" 
+                              className="max-w-xs rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity mb-1" 
                               onClick={() => setSelectedImage(`${msg.fileUrl}`)}
                             />
                           ) : (
-                            <a href={`${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all">
+                            <a href={`${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all mb-1 block">
                               {msg.fileName}
                             </a>
                           )}
                         </div>
                       )}
-                      {msg.content && <p className="break-words">{msg.content}</p>}
+                      {msg.content && msg.content !== '🎤 Voice Message' && (
+                        <p className="break-words">{msg.content}</p>
+                      )}
                     </div>
                   </div>
                 </div>

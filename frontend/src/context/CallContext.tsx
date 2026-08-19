@@ -329,8 +329,6 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const toggleScreenShare = async () => {
-    if (!localStreamRef.current) return;
-
     if (isScreenSharing) {
       // Revert to webcam
       try {
@@ -342,36 +340,69 @@ export const CallProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           if (sender) sender.replaceTrack(videoTrack);
         });
         
-        localStreamRef.current.getVideoTracks()[0].stop();
-        localStreamRef.current.removeTrack(localStreamRef.current.getVideoTracks()[0]);
-        localStreamRef.current.addTrack(videoTrack);
-        setLocalStream(new MediaStream(localStreamRef.current.getTracks()));
+        if (localStreamRef.current) {
+          const oldTrack = localStreamRef.current.getVideoTracks()[0];
+          if (oldTrack) {
+            oldTrack.stop();
+            localStreamRef.current.removeTrack(oldTrack);
+          }
+          localStreamRef.current.addTrack(videoTrack);
+          setLocalStream(new MediaStream(localStreamRef.current.getTracks()));
+        }
         setIsScreenSharing(false);
       } catch (err) {
         console.error('Failed to revert to webcam', err);
       }
     } else {
+      // Check if getDisplayMedia is supported on this browser/mobile device
+      if (!navigator.mediaDevices || typeof navigator.mediaDevices.getDisplayMedia !== 'function') {
+        setError('Screen sharing is not supported by your mobile browser. Please use Chrome on desktop or a supported mobile browser.');
+        return;
+      }
+
       // Share screen
       try {
-        const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false // Mobile browsers reject getDisplayMedia if audio is requested
+        });
+        
         const screenTrack = displayStream.getVideoTracks()[0];
         
         screenTrack.onended = () => {
-          toggleScreenShare(); // revert when stopped via browser UI
+          toggleScreenShare(); // revert when stopped via browser / OS notification
         };
         
         Object.values(pcs.current).forEach(pc => {
           const sender = pc.getSenders().find(s => s.track?.kind === 'video');
-          if (sender) sender.replaceTrack(screenTrack);
+          if (sender) {
+            sender.replaceTrack(screenTrack);
+          } else if (localStreamRef.current) {
+            pc.addTrack(screenTrack, localStreamRef.current);
+          }
         });
         
-        localStreamRef.current.getVideoTracks()[0].stop();
-        localStreamRef.current.removeTrack(localStreamRef.current.getVideoTracks()[0]);
-        localStreamRef.current.addTrack(screenTrack);
-        setLocalStream(new MediaStream(localStreamRef.current.getTracks()));
+        if (localStreamRef.current) {
+          const oldTrack = localStreamRef.current.getVideoTracks()[0];
+          if (oldTrack) {
+            oldTrack.stop();
+            localStreamRef.current.removeTrack(oldTrack);
+          }
+          localStreamRef.current.addTrack(screenTrack);
+          setLocalStream(new MediaStream(localStreamRef.current.getTracks()));
+        } else {
+          setLocalStream(displayStream);
+          localStreamRef.current = displayStream;
+        }
+
         setIsScreenSharing(true);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to share screen', err);
+        if (err?.name === 'NotAllowedError') {
+          // User dismissed or denied the screen share prompt
+          return;
+        }
+        setError('Screen sharing failed or is restricted by your device OS/browser.');
       }
     }
   };

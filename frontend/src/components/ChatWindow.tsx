@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSocket } from '../context/SocketContext';
 import { useAuth, User } from '../context/AuthContext';
 import { useCall } from '../context/CallContext';
+import { VoiceMessagePlayer } from './VoiceMessagePlayer';
 
 interface Message {
   id: string;
@@ -339,32 +340,34 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ targetUser, onClose }) => {
                       </button>
                     )}
                     <div 
-                      className={`px-4 py-2.5 rounded-2xl text-sm min-w-0 ${
+                      className={`px-3.5 py-2.5 rounded-2xl text-sm min-w-0 ${
                         isMine ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-white text-slate-800 border border-slate-200 shadow-sm rounded-tl-sm'
                       }`}
                     >
                       {msg.fileUrl && (
-                        <div className="mb-2">
+                        <div>
                           {msg.fileType?.startsWith('audio/') ? (
-                            <audio controls src={`${msg.fileUrl}`} className="max-w-[240px] h-10" />
+                            <VoiceMessagePlayer audioUrl={msg.fileUrl} isMine={isMine} />
                           ) : msg.fileType?.startsWith('image/') ? (
                             <img 
                               src={`${msg.fileUrl}`} 
                               alt={msg.fileName} 
-                              className="max-w-xs rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity" 
+                              className="max-w-xs rounded-lg border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity mb-1" 
                               onClick={() => setSelectedImage(`${msg.fileUrl}`)}
                             />
                           ) : (
-                            <a href={`${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all">
+                            <a href={`${msg.fileUrl}`} target="_blank" rel="noreferrer" className="underline text-indigo-200 break-all mb-1 block">
                               {msg.fileName}
                             </a>
                           )}
                         </div>
                       )}
                       <div className="flex items-end gap-3 justify-between">
-                        <p className="break-words">{msg.content}</p>
+                        {msg.content && msg.content !== '🎤 Voice Message' && (
+                          <p className="break-words">{msg.content}</p>
+                        )}
                         {isMine && (
-                          <span className={`text-[10px] font-bold uppercase tracking-wider shrink-0 ${msg.read ? 'text-indigo-200' : 'text-indigo-400/70'}`}>
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ml-auto shrink-0 ${msg.read ? 'text-indigo-200' : 'text-indigo-400/70'}`}>
                             {msg.read ? 'Seen' : 'Sent'}
                           </span>
                         )}
