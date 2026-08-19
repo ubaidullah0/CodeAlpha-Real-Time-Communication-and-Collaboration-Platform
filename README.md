@@ -21,6 +21,30 @@
 
 ---
 
+## 📸 Application Showcase & Screenshots
+
+### 🖥️ 1. Main Dashboard & System Status
+Real-time presence directory with live status monitoring of Frontend, Backend, Database, and WebSockets.
+![Dashboard & Status](docs/dashboard.png)
+
+### 💬 2. Real-Time Chat & WhatsApp-Style Voice Messaging
+Sub-50ms instant messaging with custom waveform voice note player, media sharing, and "Seen" status indicators.
+![Chat & Voice Notes](docs/chat_voicenotes.png)
+
+### 📹 3. WebRTC Peer-to-Peer HD Video Calling & Screen Sharing
+Encrypted browser-to-browser HD video calls with meeting controls and screen sharing.
+![WebRTC Video Call](docs/videocall.png)
+
+### 📞 4. Incoming Video Call Notification
+Instant socket-triggered incoming call modal with one-click Accept and Decline actions.
+![Incoming Call Modal](docs/incoming_call.png)
+
+### 🔐 5. Secure Authentication & Onboarding
+Clean, modern onboarding interface with JWT cookie protection and Gmail SMTP OTP recovery.
+![Authentication](docs/login.png)
+
+---
+
 ## ✨ Key Features & Capabilities
 
 ### 💬 1. Real-Time Messaging & Direct Chat
