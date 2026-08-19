@@ -1,5 +1,6 @@
 # 🚀 SyncSpace — Real-Time Communication & Collaboration Platform
 
+[![CodeAlpha Internship](https://img.shields.io/badge/CodeAlpha-Internship%20Project-blue?style=for-the-badge&logo=codealpha)](https://www.linkedin.com/company/codealpha/)
 [![Live Frontend](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://code-alpha-real-time-communication-five.vercel.app)
 [![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render)](https://codealpha-real-time-communication-and.onrender.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -13,9 +14,10 @@
 
 ## 🌟 Overview
 
-**SyncSpace** is an enterprise-grade, full-stack real-time collaboration and communication SaaS platform engineered with modern cloud architecture. Built to rival modern team collaboration software like Slack, Discord, and Microsoft Teams, SyncSpace unites instant messaging, HD video conferencing, interactive whiteboards, topic channels, and multi-tenant workspaces in a single, lightning-fast application.
+**SyncSpace** is an enterprise-grade, full-stack real-time collaboration and communication SaaS platform developed during the **CodeAlpha Full-Stack Internship**. Built to rival modern team collaboration suites like Slack, Discord, and Microsoft Teams, SyncSpace unites instant messaging, HD video conferencing, interactive whiteboards, topic channels, and multi-tenant workspaces in a single, lightning-fast application.
 
-🔗 **Live Application:** [https://code-alpha-real-time-communication-five.vercel.app](https://code-alpha-real-time-communication-five.vercel.app)
+🔗 **Live Application:** [https://code-alpha-real-time-communication-five.vercel.app](https://code-alpha-real-time-communication-five.vercel.app)  
+🐙 **GitHub Repository:** [https://github.com/ubaidullah0/CodeAlpha-Real-Time-Communication-and-Collaboration-Platform](https://github.com/ubaidullah0/CodeAlpha-Real-Time-Communication-and-Collaboration-Platform)
 
 ---
 
@@ -186,12 +188,16 @@ Navigate to `http://localhost:5173` in your browser.
 ---
 
 ## 👨‍💻 Author & Connect
-
 Developed by **Ubaidullah Khan**
 
-* 💼 **LinkedIn:** [linkedin.com/in/ubaidullah0](https://linkedin.com)
+* 💼 **LinkedIn:** [linkedin.com/in/ubaid-ullah-0a6bb1270](https://www.linkedin.com/in/ubaid-ullah-0a6bb1270)
 * 🐙 **GitHub:** [@ubaidullah0](https://github.com/ubaidullah0)
 * 📧 **Email:** [obaidkhan13542@gmail.com](mailto:obaidkhan13542@gmail.com)
+
+---
+
+## 📄 Acknowledgements & Internship
+Special thanks to the **@CodeAlpha** team for the mentorship and challenging project track during the **CodeAlpha Web Development Internship program**.
 
 ---
 
