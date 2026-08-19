@@ -1,175 +1,200 @@
-# SyncSpace
+# 🚀 SyncSpace — Real-Time Communication & Collaboration Platform
 
-![SyncSpace Hero](https://via.placeholder.com/1200x400/4F46E5/FFFFFF?text=SyncSpace+-+Real-Time+Collaboration+Platform)
-
-## Screenshots
-
-![Video Call](docs/screenshot_video.png)
-
-![Dashboard](docs/screenshot_dashboard.png)
-
-
-A professional, modern SaaS real-time communication and collaboration platform. SyncSpace enables teams to work together seamlessly with workspaces, channels, direct messaging, real-time video calling, screen sharing, file sharing, and interactive collaborative whiteboards.
+[![Live Frontend](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://code-alpha-real-time-communication-five.vercel.app)
+[![Backend API](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render)](https://codealpha-real-time-communication-and.onrender.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React%2018-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io/)
+[![WebRTC](https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white)](https://webrtc.org/)
 
 ---
 
-## 🚀 Features
+## 🌟 Overview
 
-- **Authentication & Security:** Secure JWT-based auth, password hashing (bcrypt), and email-based OTP password recovery.
-- **Workspaces & Channels:** Organize teams into Workspaces (Teams) and create topic-based Public and Private Channels.
-- **Real-Time Direct Messaging:** 1-on-1 instant messaging with read receipts ("Seen" status) powered by Socket.io.
-- **Video & Audio Calling:** WebRTC-based peer-to-peer 1-on-1 and multi-user calls.
-- **Screen Sharing:** Present your screen during video calls directly from the browser.
-- **File Sharing:** Upload, share, and preview images, audio, and documents within chats and channels.
-- **Collaborative Whiteboard:** Real-time synchronized drawing canvas for visual team brainstorming.
-- **Presence Tracking:** See who is currently online in real time.
-- **Modern UI/UX:** Responsive, mobile-friendly interface built with Tailwind CSS, featuring subtle animations, glassmorphism, and accessible controls.
+**SyncSpace** is an enterprise-grade, full-stack real-time collaboration and communication SaaS platform engineered with modern cloud architecture. Built to rival modern team collaboration software like Slack, Discord, and Microsoft Teams, SyncSpace unites instant messaging, HD video conferencing, interactive whiteboards, topic channels, and multi-tenant workspaces in a single, lightning-fast application.
+
+🔗 **Live Application:** [https://code-alpha-real-time-communication-five.vercel.app](https://code-alpha-real-time-communication-five.vercel.app)
 
 ---
 
-## 🛠️ Technology Stack
+## ✨ Key Features & Capabilities
 
-**Frontend:**
-- React (Vite)
-- TypeScript
-- Tailwind CSS
-- Socket.io-client
-- Axios
+### 💬 1. Real-Time Messaging & Direct Chat
+* **Ultra-Low Latency Communication:** Powered by WebSockets (`Socket.io`) for sub-50ms message delivery.
+* **Direct 1-on-1 Messages:** Seamless conversations with read receipts ("Seen" status indicators) and unread counts.
+* **Typing & Presence Indicators:** Real-time online/offline presence tracking with multi-tab awareness.
 
-**Backend:**
-- Node.js & Express
-- TypeScript
-- Prisma ORM
-- PostgreSQL
-- Socket.io (WebSockets)
-- JWT (JSON Web Tokens)
-- Nodemailer (SMTP OTPs)
-- WebRTC (Signaling)
+### 🏢 2. Multi-Tenant Workspaces & Channels
+* **Team Organization:** Create and join distinct Workspaces with role-based member management.
+* **Public & Private Channels:** Segment discussions into topic-specific channels with fine-grained access control.
+* **Channel Permissions:** Secure invitation workflows for private team groups.
+
+### 📹 3. HD Video Conferencing & Screen Sharing
+* **Peer-to-Peer WebRTC Architecture:** Direct browser-to-browser encrypted video and crystal-clear audio calling.
+* **1-on-1 & Multi-User Meeting Rooms:** Dynamic room mesh supporting multiple participants simultaneously.
+* **In-Meeting Screen Sharing:** High-framerate browser screen presentation with native audio capture.
+
+### 🎨 4. Real-Time Collaborative Whiteboard
+* **Multiplayer Drawing Canvas:** Synchronized vector whiteboard allowing team members to sketch diagrams and brainstorm ideas in real time.
+* **Custom Tooling:** Adjustable brush sizes, color palettes, eraser tools, and instant canvas clearing.
+
+### 📁 5. Rich Media & File Sharing
+* **Multi-Format Attachment Support:** Upload and share images, documents, and media within conversations.
+* **Interactive Lightbox:** High-resolution preview modal with instant download capabilities.
+* **Voice Messaging:** Browser-recorded audio notes with interactive waveform playback.
+
+### 🛡️ 6. Enterprise-Grade Authentication & Security
+* **JWT Token Security:** HTTP-only, secure cookie-based session management.
+* **Cryptographic Password Recovery:** 6-digit one-time password (OTP) delivery via Gmail SMTP.
+* **Bcrypt Hash Verification:** Zero plaintext OTP storage with 2-minute auto-expiry and brute-force attempt limits.
+* **Smart Rate Limiting:** Backend-enforced 30-second cooldown protection against spam and email enumeration.
 
 ---
 
-## 📂 Project Structure
+## 🏗️ Architecture & Technology Stack
+
+```
+                     ┌─────────────────────────────────────────────────┐
+                     │          React 18 + Vite (TypeScript)           │
+                     │          Tailwind CSS + Lucide UI Icons         │
+                     │          Hosted on Vercel Edge Network          │
+                     └───────────────────────┬─────────────────────────┘
+                                             │ HTTPS & WSS
+                                             ▼
+                     ┌─────────────────────────────────────────────────┐
+                     │          Node.js + Express (TypeScript)         │
+                     │          Hosted on Render Web Service           │
+                     │   Socket.io Gateway  │  JWT & REST Controllers  │
+                     └──────────┬──────────────────────────┬───────────┘
+                                │                          │
+                      Prisma ORM│                          │ SMTP Proxy
+                                ▼                          ▼
+                     ┌──────────────────────┐    ┌─────────────────────┐
+                     │  Neon PostgreSQL DB  │    │  Gmail SMTP Relay   │
+                     │  Relational Storage  │    │  Secure Edge Mail   │
+                     └──────────────────────┘    └─────────────────────┘
+```
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, React Router v7, Context API |
+| **Real-Time / Media** | Socket.io Client, WebRTC Native API, HTML5 Canvas API, Web Audio API |
+| **Backend** | Node.js, Express.js, TypeScript, Socket.io Server, Multer |
+| **Database & ORM** | PostgreSQL (Neon Serverless), Prisma ORM |
+| **Security & Auth** | JSON Web Tokens (JWT), Bcrypt.js, HTTP-only Cookies, Crypto |
+| **Email Delivery** | Nodemailer, Gmail SMTP over TLS/SSL, Vercel Serverless Functions |
+| **Deployment** | Vercel (Frontend & Edge Proxy), Render (Backend), Neon (Database) |
+
+---
+
+## 📁 Repository Structure
 
 ```
 syncspace/
-├── backend/                  # Node.js Express server
-│   ├── prisma/               # Database schema & migrations
+├── backend/
+│   ├── prisma/
+│   │   └── schema.prisma         # Database schema (Users, Messages, Workspaces, OTPs)
 │   ├── src/
-│   │   ├── controllers/      # Route controllers (auth, messages, etc.)
-│   │   ├── middleware/       # JWT auth & error handling
-│   │   ├── routes/           # Express API endpoints
-│   │   ├── lib/              # Socket.io, Prisma client, Mailer
-│   │   └── index.ts          # Server entry point
-│   ├── uploads/              # Local file storage (dev only)
-│   └── .env.example          # Backend environment variables template
+│   │   ├── controllers/          # Business logic (Auth, Password Reset, Workspaces, Chat)
+│   │   ├── middleware/           # JWT verification, upload validation
+│   │   ├── routes/               # REST API endpoints
+│   │   ├── services/             # Email delivery & notification services
+│   │   ├── lib/                  # Prisma client & Socket.io initialization
+│   │   └── index.ts              # Express server entry point
+│   ├── package.json
+│   └── tsconfig.json
 │
-└── frontend/                 # React SPA
+└── frontend/
+    ├── api/
+    │   └── sendEmail.js          # Vercel Serverless Email proxy function
     ├── src/
-    │   ├── components/       # Reusable UI elements (Modals, Sidebars)
-    │   ├── context/          # Global state (Auth, Socket, Workspace, Call)
-    │   ├── pages/            # Main views (Dashboard, Login, Register)
-    │   └── index.css         # Tailwind & global styles
-    └── .env.example          # Frontend environment variables template
+    │   ├── components/           # Reusable UI (Modals, Call Window, Whiteboard, Chat)
+    │   ├── context/              # State management (Auth, Call, Socket, Workspace)
+    │   ├── pages/                # Views (Dashboard, Login, Register, VerifyOtp, ResetPassword)
+    │   ├── App.tsx               # Route declarations & protection guards
+    │   └── main.tsx              # Application bootstrap
+    ├── vercel.json               # Edge routing & backend proxy configuration
+    ├── package.json
+    └── tailwind.config.js
 ```
 
 ---
 
-## 💻 Local Development Setup
+## ⚙️ Local Development Guide
 
-### 1. Database Setup
-You will need a PostgreSQL database. You can install it locally, use Docker, or use a free cloud provider like [Neon.tech](https://neon.tech/) or [Supabase](https://supabase.com/).
+### Prerequisites
+* **Node.js**: v18.0.0 or higher
+* **npm**: v9.0.0 or higher
+* **PostgreSQL Database**: Local or Cloud instance (e.g. Neon, Supabase)
 
-### 2. Backend Setup
-1. Open a terminal and navigate to the `backend` folder:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
-4. Fill in the `.env` file with your Database URL, JWT Secret, and SMTP credentials.
-5. Push the Prisma schema to the database:
-   ```bash
-   npx prisma db push
-   npx prisma generate
-   ```
-6. Start the development server:
-   ```bash
-   npm run dev
-   ```
+### 1. Clone the Repository
+```bash
+git clone https://github.com/ubaidullah0/CodeAlpha-Real-Time-Communication-and-Collaboration-Platform.git
+cd CodeAlpha-Real-Time-Communication-and-Collaboration-Platform/syncspace
+```
 
-### 3. Frontend Setup
-1. Open a new terminal and navigate to the `frontend` folder:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-
-The app will be running at `http://localhost:5173`.
-
----
-
-## 🔒 Security Configuration (.env)
-
-**DO NOT COMMIT `.env` FILES TO VERSION CONTROL.**
-
-Example Backend `.env`:
+### 2. Configure Backend
+```bash
+cd backend
+npm install
+cp .env.example .env
+```
+Fill in your `.env` variables:
 ```env
 PORT=3001
-NODE_ENV=production
-DATABASE_URL="postgresql://user:password@host:port/dbname"
-JWT_SECRET="generate_a_long_random_string_here"
-SMTP_HOST="smtp.example.com"
+DATABASE_URL="postgresql://user:password@host:5432/syncspace"
+JWT_SECRET="your_secure_jwt_secret_key"
+FRONTEND_URL="http://localhost:5173"
+SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=465
-SMTP_USER="youremail@example.com"
-SMTP_PASSWORD="your_app_password"
-SMTP_FROM="SyncSpace <youremail@example.com>"
-CORS_ORIGIN="https://your-frontend-domain.com"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASSWORD="your-16-digit-app-password"
+SMTP_FROM="SyncSpace <your-email@gmail.com>"
 ```
 
-Example Frontend `.env`:
-```env
-VITE_API_URL="https://your-backend-domain.com"
-VITE_SOCKET_URL="https://your-backend-domain.com"
+Sync database schema:
+```bash
+npx prisma generate
+npx prisma db push
 ```
+
+Start backend:
+```bash
+npm run dev
+```
+
+### 3. Configure Frontend
+Open a new terminal:
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+Navigate to `http://localhost:5173` in your browser.
 
 ---
 
-## 🚀 Production Deployment
+## 🔒 Security Best Practices Implemented
 
-### Deployment Architecture
-- **Frontend (Vercel / Netlify / Cloudflare Pages):** Build as a static SPA. Set `VITE_API_URL` to point to the backend.
-- **Backend (Render / Railway / Fly.io):** Deploy as a Node web service. Requires WebSocket support. Add all backend environment variables.
-- **Database (Neon / Supabase):** Hosted PostgreSQL database.
-- **Storage (AWS S3 / Cloudinary):** Currently, uploads are stored locally in the `/uploads` directory. For production, modify `upload.routes.ts` to upload to a cloud bucket like AWS S3.
-
-### Steps to Deploy
-1. **Database:** Create a production PostgreSQL DB and save the connection string.
-2. **Backend:**
-   - Connect your GitHub repo to Render.com (or similar).
-   - Set Build Command: `npm install && npx prisma generate && npx prisma db push && npm run build`
-   - Set Start Command: `npm start`
-   - Add all environment variables (DATABASE_URL, JWT_SECRET, etc.).
-3. **Frontend:**
-   - Connect your GitHub repo to Vercel (or similar).
-   - Set the Root Directory to `frontend`.
-   - Add environment variables (`VITE_API_URL`).
-   - Click Deploy.
+* **Strict Input Validation & Sanitization** on all authentication and messaging routes.
+* **Enumeration-Resistant Password Reset:** API responses do not reveal account existence to attackers.
+* **Ephemeral Reset Sessions:** Single-use UUID session tokens with 10-minute expiry for password overrides.
+* **CORS & Credential Whitelisting:** Explicit origin policies preventing cross-site scripting vulnerabilities.
 
 ---
 
-## 📝 License
+## 👨‍💻 Author & Connect
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Developed by **Ubaidullah Khan**
+
+* 💼 **LinkedIn:** [linkedin.com/in/ubaidullah0](https://linkedin.com)
+* 🐙 **GitHub:** [@ubaidullah0](https://github.com/ubaidullah0)
+* 📧 **Email:** [obaidkhan13542@gmail.com](mailto:obaidkhan13542@gmail.com)
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).

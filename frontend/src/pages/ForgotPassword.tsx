@@ -65,7 +65,16 @@ const ForgotPassword = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="bg-rose-50 border-l-4 border-rose-500 text-rose-700 p-4 rounded-r-md text-sm font-medium animate-in fade-in">
-                {error}
+                <p>{error}</p>
+                {email && (
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/verify-otp?email=${encodeURIComponent(email.trim())}`)}
+                    className="mt-2 text-xs font-bold text-indigo-600 hover:text-indigo-800 underline block"
+                  >
+                    Already have the code? Enter it here &rarr;
+                  </button>
+                )}
               </div>
             )}
             <div>
@@ -99,7 +108,19 @@ const ForgotPassword = () => {
             </div>
           </form>
           
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center flex items-center justify-center gap-2">
+          <div className="mt-6 text-center">
+            {email.trim() && (
+              <button
+                type="button"
+                onClick={() => navigate(`/verify-otp?email=${encodeURIComponent(email.trim())}`)}
+                className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition-all"
+              >
+                Already received a 6-digit code? Enter code &rarr;
+              </button>
+            )}
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-slate-100 text-center flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-slate-400">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
