@@ -23,41 +23,63 @@
 
 ## 📸 Application Showcase & Feature Gallery
 
-### 🖥️ 1. Main Dashboard & Real-Time System Status
-Real-time presence directory with live status monitoring of Frontend, Backend, Database, and WebSockets (Socket.io).
+### 🚀 Part 1: Real-Time Team Collaboration Suite
+
+#### 🖥️ 1. Main Dashboard & Real-Time System Health
+Live presence directory with multi-system status monitoring of Frontend, Backend, Database, and WebSockets (`Socket.io`).
 ![Dashboard & Status](docs/dashboard.png)
 
-### 💬 2. Real-Time Chat & WhatsApp-Style Voice Notes
+#### 💬 2. Real-Time Chat & WhatsApp-Style Voice Notes
 Sub-50ms instant messaging with custom waveform voice note player, image attachments, and "Seen" status read receipts.
 ![Chat & Voice Notes](docs/chat_voicenotes.png)
 
-### 📹 3. Multi-User WebRTC Video Conferencing
+#### 📹 3. Multi-User WebRTC Video Conferencing
 Encrypted browser-to-browser HD multi-user meeting rooms with dynamic participant grids and meeting controls.
 ![Multi-User Video Call](docs/videocall_multiuser.png)
 
-### 💻 4. In-Meeting High-Definition Screen Sharing
+#### 💻 4. In-Meeting High-Definition Screen Sharing
 Stream high-framerate browser tabs, application windows, or entire desktops during live video calls.
 ![Live Screen Sharing](docs/screenshare.png)
 
-### 🎨 5. Real-Time Collaborative Whiteboard
+#### 🎨 5. Real-Time Collaborative Whiteboard
 Synchronized multiplayer vector drawing canvas with custom color palettes, brush tools, and instant clear controls.
 ![Collaborative Whiteboard](docs/whiteboard.png)
 
-### 📞 6. Instant Incoming Call Notification Modal
+#### 📞 6. Instant Incoming Call Notification Modal
 Socket-driven real-time incoming call overlay with one-click Accept and Reject controls.
 ![Incoming Call Modal](docs/incoming_call.png)
 
-### 🔐 7. Secure Authentication & Onboarding
+---
+
+### 🔐 Part 2: Complete Authentication & Password Recovery Flow
+
+#### 🔑 Step 1: Secure Login & Onboarding
 Clean, modern authentication interface with JWT cookie protection and password hashing.
 ![Login & Authentication](docs/login.png)
 
-### 📧 8. Gmail SMTP OTP Password Reset
-Smart password recovery with 30-second rate-limiting protection and cryptographic 6-digit OTP delivery.
+#### 📝 Step 2: Forgot Password Request
+Smart password recovery request with 30-second rate-limiting protection against spam.
 ![Forgot Password Request](docs/forgot_password.png)
 
-### ⏱️ 9. Dual-Timer OTP Verification System
+#### 📧 Step 3: Branded Gmail SMTP OTP Delivery
+Automated delivery of high-security 6-digit verification code with project branding directly to user's inbox.
+![Branded Gmail OTP](docs/email_otp_received.png)
+
+#### ⏱️ Step 4: Dual-Timer OTP Verification
 Independent 2-minute validity countdown (`OTP expires in: 01:54`) and 30-second resend cooldown (`Resend available in: 00:24`).
 ![Verify OTP with Dual Timers](docs/verify_otp.png)
+
+#### 🔢 Step 5: OTP Code Entry & Validation
+Individual auto-focused 6-digit input boxes with instant validation feedback.
+![OTP Code Entered](docs/otp_entered.png)
+
+#### 🔒 Step 6: Create New Password
+Secure token-authenticated password override form with confirmation validation.
+![Create New Password](docs/create_new_password.png)
+
+#### ✅ Step 7: Password Reset Successful
+Session invalidation and instant redirection back to login with updated credentials.
+![Password Reset Successful](docs/password_reset_success.png)
 
 ---
 
