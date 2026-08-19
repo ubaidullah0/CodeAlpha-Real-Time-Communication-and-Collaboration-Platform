@@ -12,8 +12,21 @@ import uploadRouter from './routes/upload.routes';
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  process.env.FRONTEND_URL,
+  'https://code-alpha-real-time-communication-five.vercel.app'
+].filter(Boolean) as string[];
+
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite default port
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());

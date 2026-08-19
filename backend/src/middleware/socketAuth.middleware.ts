@@ -9,19 +9,31 @@ declare module 'socket.io' {
 
 export const socketAuthMiddleware = async (socket: Socket, next: (err?: Error) => void) => {
   try {
-    const cookieHeader = socket.request.headers.cookie;
+    let token: string | undefined;
 
-    if (!cookieHeader) {
-      return next(new Error('Authentication required'));
+    // 1. Check handshake auth object (ideal for cross-domain)
+    if (socket.handshake.auth && socket.handshake.auth.token) {
+      token = socket.handshake.auth.token;
     }
 
-    const cookies = Object.fromEntries(
-      cookieHeader.split(';').map(c => {
-        const parts = c.trim().split('=');
-        return [parts[0], parts.slice(1).join('=')];
-      })
-    );
-    const token = cookies.token;
+    // 2. Check handshake query parameters
+    if (!token && socket.handshake.query && typeof socket.handshake.query.token === 'string') {
+      token = socket.handshake.query.token;
+    }
+
+    // 3. Check cookies from headers
+    if (!token) {
+      const cookieHeader = socket.request.headers.cookie;
+      if (cookieHeader) {
+        const cookies = Object.fromEntries(
+          cookieHeader.split(';').map(c => {
+            const parts = c.trim().split('=');
+            return [parts[0], parts.slice(1).join('=')];
+          })
+        );
+        token = cookies.token;
+      }
+    }
 
     if (!token) {
       return next(new Error('Authentication required'));

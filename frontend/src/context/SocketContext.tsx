@@ -18,7 +18,7 @@ interface SocketContextType {
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
@@ -27,9 +27,17 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     let newSocket: Socket | null = null;
 
     if (user) {
-      // Create socket connection when authenticated
-      newSocket = io('/', {
+      // Connect directly to backend on Render in production for persistent WebSockets
+      const socketUrl = ((import.meta as unknown) as { env: Record<string, string> }).env?.VITE_SOCKET_URL || 
+        (window.location.hostname === 'localhost' ? '/' : 'https://codealpha-real-time-communication-and.onrender.com');
+
+      const authToken = token || localStorage.getItem('auth_token');
+
+      newSocket = io(socketUrl, {
         withCredentials: true,
+        auth: { token: authToken },
+        query: authToken ? { token: authToken } : undefined,
+        transports: ['websocket', 'polling'],
       });
 
       newSocket.on('connect', () => {

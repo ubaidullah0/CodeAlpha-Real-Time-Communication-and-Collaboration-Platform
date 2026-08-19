@@ -9,8 +9,10 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
+  token: string | null;
   loading: boolean;
   setUser: (user: User | null) => void;
+  setToken: (token: string | null) => void;
   checkAuth: () => Promise<void>;
 }
 
@@ -18,6 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
   const [loading, setLoading] = useState(true);
 
   const checkAuth = async () => {
@@ -28,8 +31,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
+        if (data.token) {
+          setToken(data.token);
+          localStorage.setItem('auth_token', data.token);
+        }
       } else {
         setUser(null);
+        setToken(null);
+        localStorage.removeItem('auth_token');
       }
     } catch (error) {
       console.error('Failed to check auth status', error);
@@ -44,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, setUser, checkAuth }}>
+    <AuthContext.Provider value={{ user, token, loading, setUser, setToken, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

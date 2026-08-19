@@ -8,10 +8,11 @@ const generateToken = (userId: string): string => {
 };
 
 const setCookie = (res: Response, token: string) => {
+  const isProd = process.env.NODE_ENV === 'production';
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
@@ -40,6 +41,7 @@ export const register = async (req: Request, res: Response) => {
 
     res.status(201).json({
       user: { id: user.id, email: user.email, name: user.name },
+      token,
     });
   } catch (error) {
     console.error(error);
@@ -70,6 +72,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.json({
       user: { id: user.id, email: user.email, name: user.name },
+      token,
     });
   } catch (error) {
     console.error(error);
@@ -78,15 +81,17 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
+  const isProd = process.env.NODE_ENV === 'production';
   res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
   });
   res.json({ message: 'Logged out successfully' });
 };
 
 export const getMe = (req: Request, res: Response) => {
   // req.user is set by auth middleware
-  res.json({ user: req.user });
+  const token = req.cookies?.token;
+  res.json({ user: req.user, token });
 };
