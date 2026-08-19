@@ -21,27 +21,43 @@
 
 ---
 
-## 📸 Application Showcase & Screenshots
+## 📸 Application Showcase & Feature Gallery
 
-### 🖥️ 1. Main Dashboard & System Status
-Real-time presence directory with live status monitoring of Frontend, Backend, Database, and WebSockets.
+### 🖥️ 1. Main Dashboard & Real-Time System Status
+Real-time presence directory with live status monitoring of Frontend, Backend, Database, and WebSockets (Socket.io).
 ![Dashboard & Status](docs/dashboard.png)
 
-### 💬 2. Real-Time Chat & WhatsApp-Style Voice Messaging
-Sub-50ms instant messaging with custom waveform voice note player, media sharing, and "Seen" status indicators.
+### 💬 2. Real-Time Chat & WhatsApp-Style Voice Notes
+Sub-50ms instant messaging with custom waveform voice note player, image attachments, and "Seen" status read receipts.
 ![Chat & Voice Notes](docs/chat_voicenotes.png)
 
-### 📹 3. WebRTC Peer-to-Peer HD Video Calling & Screen Sharing
-Encrypted browser-to-browser HD video calls with meeting controls and screen sharing.
-![WebRTC Video Call](docs/videocall.png)
+### 📹 3. Multi-User WebRTC Video Conferencing
+Encrypted browser-to-browser HD multi-user meeting rooms with dynamic participant grids and meeting controls.
+![Multi-User Video Call](docs/videocall_multiuser.png)
 
-### 📞 4. Incoming Video Call Notification
-Instant socket-triggered incoming call modal with one-click Accept and Decline actions.
+### 💻 4. In-Meeting High-Definition Screen Sharing
+Stream high-framerate browser tabs, application windows, or entire desktops during live video calls.
+![Live Screen Sharing](docs/screenshare.png)
+
+### 🎨 5. Real-Time Collaborative Whiteboard
+Synchronized multiplayer vector drawing canvas with custom color palettes, brush tools, and instant clear controls.
+![Collaborative Whiteboard](docs/whiteboard.png)
+
+### 📞 6. Instant Incoming Call Notification Modal
+Socket-driven real-time incoming call overlay with one-click Accept and Reject controls.
 ![Incoming Call Modal](docs/incoming_call.png)
 
-### 🔐 5. Secure Authentication & Onboarding
-Clean, modern onboarding interface with JWT cookie protection and Gmail SMTP OTP recovery.
-![Authentication](docs/login.png)
+### 🔐 7. Secure Authentication & Onboarding
+Clean, modern authentication interface with JWT cookie protection and password hashing.
+![Login & Authentication](docs/login.png)
+
+### 📧 8. Gmail SMTP OTP Password Reset
+Smart password recovery with 30-second rate-limiting protection and cryptographic 6-digit OTP delivery.
+![Forgot Password Request](docs/forgot_password.png)
+
+### ⏱️ 9. Dual-Timer OTP Verification System
+Independent 2-minute validity countdown (`OTP expires in: 01:54`) and 30-second resend cooldown (`Resend available in: 00:24`).
+![Verify OTP with Dual Timers](docs/verify_otp.png)
 
 ---
 
